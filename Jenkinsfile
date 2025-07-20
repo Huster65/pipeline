@@ -1,10 +1,20 @@
 pipeline {
     agent any
-	stage('Build') {
+
+    stages {
+        stage('Clone') {
             steps {
-                sh 'docker build -t minhnhatbk65/nodejs-test:v10 .'
-                sh 'docker push minhnhatbk65/nodejs-test:v10'
+                sh 'rm -rf pipeline && git clone https://github.com/Huster65/pipeline.git'
             }
         }
-    }    
+
+        stage('Build') {
+            steps {
+                dir('pipeline') {
+                    sh 'docker build -t minhnhatbk65/nodejs-test:v10 .'
+                    sh 'docker push minhnhatbk65/nodejs-test:v10'
+                }
+            }
+        }
+    }
 }
